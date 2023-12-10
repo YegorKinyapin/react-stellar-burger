@@ -11,6 +11,7 @@ function App() {
       	Измените src/components/app/app.jsx и сохраните для обновления.
       </pre>
       <div className="sd"> </div>
+      <h1>sjdnfkjsdn</h1>
     </div>
   );
 }
