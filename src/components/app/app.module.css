@@ -5,6 +5,11 @@
   background-color: #131316;
   color: #f2f2f3;
 }
-.dksmc {
-  margin: 2px;
+.main {
+  width: 1240px;
+  display: grid;
+  grid-template-columns: 600px 600px;
+  gap: 40px;
+  margin-left: auto;
+  margin-right: auto;
 }
