@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Typography } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -10,6 +10,7 @@ import IngredientItem from "../IngredientItem/IngredientItem";
 import { clearIng, openIngr } from "../../services/reducers/ingrDetailsSlice";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+
 
 
 export const getIngredientCount = (selectedIngredients, ingredientId) => {
@@ -24,9 +25,66 @@ function BurgerIngredients() {
     const [modalOpen, setModalOpen] = useState(false);
     const ingredients = useSelector(getIngrSelector);
     const loading = useSelector(isLoadingSelector);
-    
-
     const dispatch = useDispatch();
+
+    const bunsRef = useRef(null);
+    const saucesRef = useRef(null);
+    const fillingsRef = useRef(null);
+    const scrollContainerRef = useRef(null);
+
+    const scrollToRef = (ref) => {
+        const scrollContainer = scrollContainerRef.current;
+        if (scrollContainer && ref.current) {
+          scrollContainer.scrollTop = ref.current.offsetTop - scrollContainer.offsetTop;
+        }
+    };
+
+    const handleTabClick = (tab) => {
+        setCurrent(tab);
+        switch (tab) {
+          case 'Булки':
+            scrollToRef(bunsRef);
+            break;
+          case 'Соусы':
+            scrollToRef(saucesRef);
+            break;
+          case 'Начинки':
+            scrollToRef(fillingsRef);
+            break;
+          default:
+            break;
+        }
+    };
+
+    const handleScroll = () => {
+        const scrollContainer = scrollContainerRef.current;
+        const bunsDistance = Math.abs(bunsRef.current.getBoundingClientRect().top - scrollContainer.getBoundingClientRect().top);
+        const saucesDistance = Math.abs(saucesRef.current.getBoundingClientRect().top - scrollContainer.getBoundingClientRect().top);
+        const fillingsDistance = Math.abs(fillingsRef.current.getBoundingClientRect().top - scrollContainer.getBoundingClientRect().top);
+    
+        const closest = Math.min(bunsDistance, saucesDistance, fillingsDistance);
+    
+        if (closest === bunsDistance) {
+          setCurrent('Булки');
+        } else if (closest === saucesDistance) {
+          setCurrent('Соусы');
+        } else {
+          setCurrent('Начинки');
+        }
+    };
+
+    useEffect(() => {
+        const scrollContainer = scrollContainerRef.current;
+        if (scrollContainer) {
+          scrollContainer.addEventListener('scroll', handleScroll);
+        }
+    
+        return () => {
+          if (scrollContainer) {
+            scrollContainer.removeEventListener('scroll', handleScroll);
+          }
+        };
+      }, []);
 
     const openModal = (element) => {
         dispatch(openIngr(element));
@@ -43,7 +101,6 @@ function BurgerIngredients() {
     const bunArray = useSelector(
         (state) => state.burgerConstructor.bun
     );
-    console.log(ingrArray)
 
     useEffect(() => {
         dispatch(fetchIngredients())
@@ -67,18 +124,23 @@ function BurgerIngredients() {
         <section>
             <h2 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h2>
             <nav className={`mb-10 ${styles.tab_block}`}>
-                <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
+                <Tab value="Булки" active={current === 'Булки'} 
+                onClick={() => handleTabClick('Булки')}>
                     Булки
                 </Tab>
-                <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
+                <Tab value="Соусы" active={current === 'Соусы'} 
+                onClick={() => handleTabClick('Соусы')}>
                     Соусы
                 </Tab>
-                <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
+                <Tab value="Начинки" active={current === 'Начинки'} 
+                onClick={() => handleTabClick('Начинки')}>
                     Начинки
                 </Tab>
             </nav>
-            <div className={`${styles.custom_scroll} ${styles.block}`}>
-                <div id='buns'>
+            <div className={`${styles.custom_scroll} ${styles.block}`} 
+            onScroll={handleScroll}
+            ref={scrollContainerRef}>
+                <div id='buns' ref={bunsRef}>
                     <h3 className="text text_type_main-medium mb-6">Булки</h3>
                     <div className={styles.chapter}>
                         {bunIngr.map((ingredient) => (
@@ -96,7 +158,7 @@ function BurgerIngredients() {
                     </div>
                 </div>
 
-                <div id='sauces'>
+                <div id='sauces' ref={saucesRef}>
                     <h3 className="text text_type_main-medium mb-6">Соусы</h3>
                     <div className={styles.chapter}>
                         {sauceIngr.map((ingredient) => (
@@ -114,7 +176,7 @@ function BurgerIngredients() {
                     </div>
                 </div>
 
-                <div id='mains'>
+                <div id='mains' ref={fillingsRef}>
                     <h3 className="text text_type_main-medium mb-6">Начинки</h3>
                     <div className={styles.chapter}>
                         {mainIngr.map((ingredient) => (

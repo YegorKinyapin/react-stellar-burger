@@ -22,6 +22,16 @@ function Modal({children, onClose, isModalOpen}) {
           window.removeEventListener('keydown', handleEscapePress);
         };
       }, [isModalOpen, onClose]);
+      const onOverlayClose = (e) => {
+        if (e.target === e.currentTarget) {
+            onClose()
+        }
+      }
+      const onClicking = (e) => {
+        if (e.target === e.currentTarget) {
+          onClose()
+      }
+      }
 
     if (!isModalOpen) {
       return null;
@@ -31,15 +41,14 @@ function Modal({children, onClose, isModalOpen}) {
         (
           <div onClick={onClose}>
             <div className={styles.window}>
-                <button className={styles.close}
-                onClick={() => onClose()}>
+                <div className={styles.close} onClick={onClicking}>
                     <CloseIcon type="primary" />
-                </button>   
+                </div>   
                 <div className={styles.content}>
                     {children}
                 </div>
             </div>
-            <ModalOverlay onClose={onClose}/>
+            <ModalOverlay onClose={onOverlayClose}/>
           </div>  
         ),
         modalElement

@@ -13,15 +13,13 @@ import { useDrop } from "react-dnd";
 import { addIngr, setBun } from "../../services/reducers/constructorSlice";
 import BunConstructor from "../BunConstructor/BunConstructor";
 import InteriorConstructor from "../InteriorConstructor/InteriorConstructor";
-import Price from "../Price/Price";
+import BurgerOrder from "../BurgerOrder/BurgerOrder";
 
 function BurgerConstructor() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const addElement = useSelector(addConstructoSelector);
     const dispatch = useDispatch();
     const constructorBun = useSelector(state => state.burgerConstructor.bun);
     const constructorIngredients = useSelector(state => state.burgerConstructor.constructorElement);
-    // const orderNumber = useSelector((state) => state.orderDetails.order.number);
 
     const [, drop] = useDrop({
         accept: 'INGREDIENT',
@@ -34,13 +32,6 @@ function BurgerConstructor() {
           }
         },
      });
-
-    const onOpen = () => {
-        setIsModalOpen(true);
-    }
-    const onClose = () => {
-        setIsModalOpen(false);
-    }
      
     const filterdData = addElement.filter(item => {
         return item.type!=='bun'
@@ -85,23 +76,7 @@ function BurgerConstructor() {
                 />)}
 
             </div>
-            <div className={`${styles.info} mt-10`}>
-                <div className={styles.price}>
-                    <Price />
-                    <CurrencyIcon type="primary"/>
-                </div>
-                <Button onClick={onOpen} htmlType="button" type="primary" size="medium">
-                    Оформить заказ
-                </Button>
-            </div>
-            {
-            isModalOpen &&
-            <div>
-                <Modal isModalOpen={isModalOpen} onClose={onClose}>
-                    <OrderDetails />
-                </Modal>
-            </div> 
-            }
+            <BurgerOrder />
         </section>
     )
 }
