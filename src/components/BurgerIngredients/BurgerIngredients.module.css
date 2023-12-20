@@ -14,3 +14,16 @@
     overflow: scroll;
     overflow-x: hidden;
 }
+.tab_block {
+	display: flex;
+}
+.chapter {
+    display: grid;
+    grid-template-columns: 274px 269px;
+    column-gap: 24px;
+    row-gap: 32px;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: 0;
+	margin-bottom: 40px;
+}

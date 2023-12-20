@@ -1,47 +1,27 @@
-import styles from "./app.module.css";
+import styles from "./App.module.css";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import { useEffect, useState } from "react";
-import { getIngredients } from "../../utils/api";
-import Modal from "../Modal/Modal";
-import ModalOverlay from "../ModalOverlay/ModalOverlay";
+// import { useEffect, useState } from "react";
+// import { getIngredients } from "../../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+// import { getIngrSelector, isLoadingSelector } from "../../services/selectors/selectors";
+// import { fetchIngredients } from "../../services/reducers/ingrSlice";
+import data from '../../utils/data';
+import { addConstructoSelector } from "../../services/selectors/selectors";
+import Price from "../Price/Price";
+
 
 
 function App() {
-  const [ingredients, setIngredients] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getIngredients()
-      .then((data) => {
-        setIngredients(data);
-        setLoading(false);
-      }) 
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-
-      });
-  }, []);
-  
-  if (ingredients === null || ingredients===undefined) {
-    return null;
-   }
-
-   if (loading) {
-    return <div>Loading...</div>;
-   }
-
-  console.log(ingredients);
 
   return (
     <div>
       <div className={styles.app}>
         <AppHeader/>
         <main className={styles.main}>
-          <BurgerIngredients data={ingredients}/>
-          <BurgerConstructor data={ingredients}/>
+          <BurgerIngredients />
+          <BurgerConstructor />
         </main>
       </div>
     </div>  
@@ -49,3 +29,5 @@ function App() {
 }
 
 export default App;
+
+

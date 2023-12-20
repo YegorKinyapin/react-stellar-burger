@@ -5,37 +5,44 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from "../Modal/Modal";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
-import done from '../../images/done.png';
 import PropTypes from 'prop-types';
+import OrderDetails from "../OrderDetails/OrderDetails";
+import { useDispatch, useSelector } from "react-redux";
+import { addConstructoSelector } from "../../services/selectors/selectors";
+import { useDrop } from "react-dnd";
+import { addIngr, setBun } from "../../services/reducers/constructorSlice";
+import BunConstructor from "../BunConstructor/BunConstructor";
+import InteriorConstructor from "../InteriorConstructor/InteriorConstructor";
+import Price from "../Price/Price";
 
-function BurgerConstructor(props) {
+function BurgerConstructor() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const addElement = useSelector(addConstructoSelector);
+    const dispatch = useDispatch();
+    const constructorBun = useSelector(state => state.burgerConstructor.bun);
+    const constructorIngredients = useSelector(state => state.burgerConstructor.constructorElement);
+    // const orderNumber = useSelector((state) => state.orderDetails.order.number);
+
+    const [, drop] = useDrop({
+        accept: 'INGREDIENT',
+        drop: (item) => {
+            console.log(item.ingredient)
+          if (item.ingredient && item.ingredient.type === 'bun') {
+            dispatch(setBun(item.ingredient));
+          } else if (item.ingredient) {
+            dispatch(addIngr(item.ingredient))
+          }
+        },
+     });
 
     const onOpen = () => {
         setIsModalOpen(true);
     }
-
     const onClose = () => {
         setIsModalOpen(false);
     }
-
-    useEffect(() => {
-        const handleEscapePress = (event) => {
-          if (event.key === 'Escape' && isModalOpen) {
-            onClose();
-          }
-        };
      
-        window.addEventListener('keydown', handleEscapePress);
-     
-        return () => {
-          window.removeEventListener('keydown', handleEscapePress);
-        };
-      }, [isModalOpen, onClose]);
-     
-    let ingr = Object.values(props.data)[1];
-    console.log(ingr)
-    const filterdData = ingr.filter(item => {
+    const filterdData = addElement.filter(item => {
         return item.type!=='bun'
     });
 
@@ -53,29 +60,34 @@ function BurgerConstructor(props) {
     
     return (
         <section className="pt-25">
-            <div style={{ display: 'flex', flexDirection: 'column', 
-            gap: '16px', paddingLeft: '48px' }}>
+            <div className={styles.block} ref={drop}>
                 
-                <ConstructorElement
+                {constructorBun && (<BunConstructor
                     type="top"
                     isLocked={true}
                     text="Краторная булка N-200i (верх)"
                     price={200}
-                    thumbnail='https://code.s3.yandex.net/react/code/meat-03.png'
-                />
-                <ul className={`${styles.custom_scroll} ${styles.ingredients}`}>{elements}</ul>
-                <ConstructorElement
+                    thumbnail='https://code.s3.yandex.net/react/code/bun-02.png'
+                />)}
+                {
+                    (<div className={styles.ingredients + ' custom-scroll'}>
+                        {constructorIngredients.map((element, index) => (
+                        <InteriorConstructor key={element.uuid} element={element} index={index}/>
+                        ))}
+                    </div>)
+                 }
+                {constructorBun && (<BunConstructor
                     type="bottom"
                     isLocked={true}
                     text="Краторная булка N-200i (низ)"
                     price={200}
-                    thumbnail='https://code.s3.yandex.net/react/code/meat-03.png'
-                />
+                    thumbnail='https://code.s3.yandex.net/react/code/bun-02.png'
+                />)}
 
             </div>
             <div className={`${styles.info} mt-10`}>
                 <div className={styles.price}>
-                    <span className="text text_type_digits-medium">345</span>
+                    <Price />
                     <CurrencyIcon type="primary"/>
                 </div>
                 <Button onClick={onOpen} htmlType="button" type="primary" size="medium">
@@ -85,20 +97,9 @@ function BurgerConstructor(props) {
             {
             isModalOpen &&
             <div>
-                <Modal onClose={onClose}>
-                    <h3 className="text text_type_digits-large mt-30 mb-8">034536</h3>
-                    <p className="text text_type_main-medium mb-15">
-                        идентификатор заказа
-                    </p>
-                    <img src={done} alt="Галочка" className="mb-15"></img>
-                    <p className="text text_type_main-default">
-                        Ваш заказ начали готовить
-                    </p>
-                    <p className="text text_type_main-default text_color_inactive mb-30">
-                        Дождитесь готовности из орбитальной станции
-                    </p>
+                <Modal isModalOpen={isModalOpen} onClose={onClose}>
+                    <OrderDetails />
                 </Modal>
-                <ModalOverlay onClose={onClose}/>
             </div> 
             }
         </section>
