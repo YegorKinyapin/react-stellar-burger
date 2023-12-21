@@ -15,7 +15,6 @@ function BurgerConstructor() {
     const [, drop] = useDrop({
         accept: 'INGREDIENT',
         drop: (item) => {
-            console.log(item.ingredient)
           if (item.ingredient && item.ingredient.type === 'bun') {
             dispatch(setBun(item.ingredient));
           } else if (item.ingredient) {

@@ -15,9 +15,6 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 export const getIngredientCount = (selectedIngredients, ingredientId) => {
         return selectedIngredients.filter((ingredient) => ingredient._id === ingredientId).length;
     };
-export const getBunsCount = (selectedIngredients) => {
-    return selectedIngredients ? 2 : 0;
-}
 
 function BurgerIngredients() {
     const [current, setCurrent] = React.useState('Булки');
@@ -118,6 +115,11 @@ function BurgerIngredients() {
     const bunIngr = data.filter(item => item.type==='bun');
     const sauceIngr = data.filter(item => item.type==='sauce');
     const mainIngr = data.filter(item => item.type==='main');
+
+    const getBunsCount = (selectedIngredients, id) => {
+        
+        return selectedIngredients && selectedIngredients._id ===id ? 2 : 0;
+    }
 
     return (
         <section>
