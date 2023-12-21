@@ -4,6 +4,7 @@ import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger
 import {removeIngr, swapIngredients} from "../../services/reducers/constructorSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
+import PropTypes from "prop-types";
 
 function InteriorConstructor({element, index}) {
   const dispatch = useDispatch();
@@ -47,6 +48,11 @@ function InteriorConstructor({element, index}) {
         />
     </div>
   );
+}
+
+InteriorConstructor.propTypes = {
+  element: PropTypes.object,
+  index: PropTypes.number,
 }
 
 export default InteriorConstructor;

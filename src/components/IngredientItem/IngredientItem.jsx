@@ -2,14 +2,10 @@ import React, { Children, useEffect, useState } from "react";
 import styles from './IngredientItem.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
-import { countSelector } from "../../services/selectors/selectors";
+import PropTypes from "prop-types";
 
 function IngredientItem(props) {
     const { onClick } = props;
-    // const count = useSelector(countSelector(props))
-
-    // console.log(count)
 
     const [, drag] = useDrag({
         type: 'INGREDIENT',
@@ -36,6 +32,10 @@ function IngredientItem(props) {
                     <p className={`${styles.name} text text_type_main-default`}>{props.ingredient.name}</p>
         </div>
     )
+}
+
+IngredientItem.propTypes = {
+    props: PropTypes.object,
 }
 
 export default IngredientItem;

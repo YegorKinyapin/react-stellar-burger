@@ -4,7 +4,7 @@ import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-compon
 import {useSelector} from "react-redux";
 import PropTypes from "prop-types";
 
-function BunConstructor({extraClass, type}) {
+function BunConstructor({type}) {
   const bun = useSelector(state => state.burgerConstructor.bun)
 
   return (
@@ -21,7 +21,6 @@ function BunConstructor({extraClass, type}) {
 }
 
 BunConstructor.propTypes = {
-  extraClass: PropTypes.string,
   type: PropTypes.string.isRequired
 }
 export default BunConstructor;

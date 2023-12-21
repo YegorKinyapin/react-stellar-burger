@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react"
 import { Typography } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../../services/reducers/ingrSlice";
 import { getIngrSelector, isLoadingSelector } from "../../services/selectors/selectors";
@@ -146,10 +145,6 @@ function BurgerIngredients() {
                         {bunIngr.map((ingredient) => (
                             <IngredientItem
                                 key={ingredient._id}
-                                imageSrc={ingredient.image}
-                                alt={ingredient.name}
-                                price={ingredient.price}
-                                name={ingredient.name}
                                 ingredient={ingredient}
                                 onClick={() => openModal(ingredient)}
                                 count={getBunsCount(bunArray, ingredient._id)}
@@ -164,10 +159,6 @@ function BurgerIngredients() {
                         {sauceIngr.map((ingredient) => (
                             <IngredientItem
                                 key={ingredient._id}
-                                imageSrc={ingredient.image}
-                                alt={ingredient.name}
-                                price={ingredient.price}
-                                name={ingredient.name}
                                 ingredient={ingredient}
                                 onClick={() => openModal(ingredient)}
                                 count={getIngredientCount(ingrArray, ingredient._id)}
@@ -182,10 +173,6 @@ function BurgerIngredients() {
                         {mainIngr.map((ingredient) => (
                             <IngredientItem
                                 key={ingredient._id}
-                                imageSrc={ingredient.image}
-                                alt={ingredient.name}
-                                price={ingredient.price}
-                                name={ingredient.name}
                                 ingredient={ingredient}
                                 onClick={() => openModal(ingredient)}
                                 count={getIngredientCount(ingrArray, ingredient._id)}
@@ -207,9 +194,5 @@ function BurgerIngredients() {
         </section>
     )
 }
-
-BurgerIngredients.propTypes = {
-    data: PropTypes.object
-  }; 
 
 export default BurgerIngredients;

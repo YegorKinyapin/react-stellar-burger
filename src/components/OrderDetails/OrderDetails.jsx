@@ -1,10 +1,11 @@
 import React from "react";
 import styles from './OrderDetails.module.css';
 import done from '../../images/done.png';
-import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
-function OrderDetails({ number, message }) {
-    const messageArr = message.split(/\r?\n/)
+
+function OrderDetails({ number }) {
+
     return (
         <div className={styles.order}>
             <h3 className="text text_type_digits-large mt-30 mb-8">{number}</h3>
@@ -22,5 +23,8 @@ function OrderDetails({ number, message }) {
     )
 }
 
+OrderDetails.propTypes = {
+    number: PropTypes.number,
+}
 
 export default OrderDetails;

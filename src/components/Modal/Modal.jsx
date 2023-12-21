@@ -22,16 +22,6 @@ function Modal({children, onClose, isModalOpen}) {
           window.removeEventListener('keydown', handleEscapePress);
         };
       }, [isModalOpen, onClose]);
-      const onOverlayClose = (e) => {
-        if (e.target === e.currentTarget) {
-            onClose()
-        }
-      }
-      const onClicking = (e) => {
-        if (e.target === e.currentTarget) {
-          onClose()
-      }
-      }
 
     if (!isModalOpen) {
       return null;
@@ -39,16 +29,16 @@ function Modal({children, onClose, isModalOpen}) {
     
     return createPortal(
         (
-          <div onClick={onClose}>
+          <div>
             <div className={styles.window}>
-                <div className={styles.close} onClick={onClicking}>
+                <div className={styles.close} onClick={onClose}>
                     <CloseIcon type="primary" />
                 </div>   
                 <div className={styles.content}>
                     {children}
                 </div>
             </div>
-            <ModalOverlay onClose={onOverlayClose}/>
+            <ModalOverlay onClose={onClose}/>
           </div>  
         ),
         modalElement
@@ -57,7 +47,8 @@ function Modal({children, onClose, isModalOpen}) {
 
 Modal.propTypes = {
     onClose: PropTypes.func,
-    children: PropTypes.node
+    children: PropTypes.node,
+    isModalOpen: PropTypes.bool,
   }; 
 
 export default Modal;

@@ -10,14 +10,12 @@ import { selectShowOrder, setShowOrder } from "../../services/reducers/orderSlic
 import { getOrderNumber } from "../../utils/api";
 
 function BurgerOrder() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [orderNumber, setOrderNumber] = useState(null);
     const [message, setMessage] = useState('');
     const notBunsCart = useSelector(addConstructoSelector);
     const bunsCart = useSelector(bunConstructorSelector);
     const isShowOrder = useSelector(selectShowOrder)
     const dispatch = useDispatch();
-    console.log(bunsCart)
 
     const orderData = useMemo(
         () => ({
@@ -29,26 +27,26 @@ function BurgerOrder() {
         [bunsCart, notBunsCart]
     );
 
-    useEffect(() => {
-        if (isShowOrder || isShowOrder?.payload) {
-            getOrderNumber(orderData)
-                .then((data) => {
-                    setOrderNumber(data)
-                })
-                .then(
-                    setMessage(`идентификатор заказа
-             Ваш заказ начали готовить
-             Дождитесь готовности на орбитальной станции
-             Cумма к оплате:`)
-                )
-                .catch((err) => {
-                    setOrderNumber(`  ошибка  - ${err}`).then(setMessage('извините, ошибка'))
-                })
-
-                .finally(console.log('data api ops finished!'))
+    const handleSubmitOrder = () => {
+        if (bunsCart || notBunsCart && bunsCart.length > 0 || notBunsCart.length > 0) {
+            dispatch(setShowOrder())
+            setMessage('Приступили к работе ...')
         }
-        return () => {}
-    }, [orderData, message])
+        getOrderNumber(orderData)
+            .then(
+                setMessage(`идентификатор заказа
+                Ваш заказ начали готовить
+                Дождитесь готовности на орбитальной станции
+                Cумма к оплате:`)
+            )
+            .then((data) => {
+                setOrderNumber(data)
+            })
+            .catch((err) => {
+                setOrderNumber(` ошибка - ${err}`).then(setMessage('извините, ошибка'))
+            })
+            .finally(() => console.log('data api ops finished!'))
+     }
 
     return(
         <div>
@@ -58,23 +56,17 @@ function BurgerOrder() {
                     <CurrencyIcon type="primary"/>
                 </div>
                 <Button 
-                onClick={() => {
-                    if (bunsCart || notBunsCart && (bunsCart.length > 0 || notBunsCart.length > 0)) {
-                        dispatch(setShowOrder())
-                        setMessage('Приступили к работе ...')
-                    }
-                }} 
+                onClick={handleSubmitOrder}
                 htmlType="button" type="primary" size="medium">
                     Оформить заказ
                 </Button>
             </div>
             {
                 isShowOrder && Boolean(orderNumber?.order.number) &&
-                <div>
-                    <Modal title="&nbsp;" isModalOpen={isShowOrder} onClose={() => dispatch(setShowOrder())}>
-                        <OrderDetails number={orderNumber.order.number} message={message}/>
-                    </Modal>
-                </div> 
+                <Modal title="&nbsp;" isModalOpen={isShowOrder} onClose={() => dispatch(setShowOrder())}>
+                    <OrderDetails number={orderNumber.order.number} message={message}/>
+                </Modal>
+
             }
         </div>    
     )
