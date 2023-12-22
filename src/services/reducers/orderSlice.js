@@ -1,7 +1,17 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getOrderNumber } from '../../utils/api';
 
-const initialState = { ingredients: [], show: false }
+const initialState = { ingredients: [], show: false, loading: true, }
+
+
+export const sendOrder = createAsyncThunk(
+    'orders/sendOrder',
+    async (orderData) => {
+      const response = await getOrderNumber(orderData);
+      return response;
+    }
+   );
 
 export const orderDetailsSlice = createSlice({
     name: 'orderDetails',
@@ -21,6 +31,15 @@ export const orderDetailsSlice = createSlice({
         },
         resetShowOrder: (state) => (state = initialState),
     },
+    extraReducers: (builder) => {
+        builder
+          .addCase(sendOrder.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(sendOrder.fulfilled, (state, action) => {
+            state.orderNumber = action.payload;
+          })
+       },
 })
 
 export const { setOrder, resetOrder, setShowOrder, resetShowOrder } = orderDetailsSlice.actions

@@ -184,14 +184,13 @@ function BurgerIngredients() {
                 </div>
             </div>
 
-            {modalOpen && (
-                <Modal 
+            <Modal 
                 isModalOpen={modalOpen}
                 onClose={closeModal}>
-                    <IngredientDetails onClose={closeModal}/>
-                </Modal>
-            )
-            }
+                <IngredientDetails onClose={closeModal}/>
+            </Modal>
+            
+            
             
         </section>
     )

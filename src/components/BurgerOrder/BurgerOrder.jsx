@@ -6,7 +6,7 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import styles from './BurgerOrder.module.css';
 import { addConstructoSelector, bunConstructorSelector } from "../../services/selectors/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { selectShowOrder, setShowOrder } from "../../services/reducers/orderSlice";
+import { selectShowOrder, sendOrder, setShowOrder } from "../../services/reducers/orderSlice";
 import { getOrderNumber } from "../../utils/api";
 
 function BurgerOrder() {
@@ -32,13 +32,12 @@ function BurgerOrder() {
             dispatch(setShowOrder())
             setMessage('Приступили к работе ...')
         }
-        getOrderNumber(orderData)
-            .then(
-                setMessage(`идентификатор заказа
-                Ваш заказ начали готовить
-                Дождитесь готовности на орбитальной станции
-                Cумма к оплате:`)
-            )
+        setMessage(`идентификатор заказа
+        Ваш заказ начали готовить
+        Дождитесь готовности на орбитальной станции
+        Cумма к оплате:`);
+        dispatch(sendOrder(orderData))
+            .unwrap()
             .then((data) => {
                 setOrderNumber(data)
             })
