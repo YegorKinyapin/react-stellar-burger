@@ -27,25 +27,26 @@ function BurgerOrder() {
         [bunsCart, notBunsCart]
     );
 
+
     const handleSubmitOrder = () => {
-        if (bunsCart || notBunsCart && bunsCart.length > 0 || notBunsCart.length > 0) {
-            dispatch(setShowOrder())
-            setMessage('Приступили к работе ...')
-        }
-        setMessage(`идентификатор заказа
-        Ваш заказ начали готовить
-        Дождитесь готовности на орбитальной станции
-        Cумма к оплате:`);
-        dispatch(sendOrder(orderData))
+        if (
+          bunsCart ||
+          (notBunsCart && bunsCart.length > 0) ||
+          notBunsCart.length > 0
+        ) {
+          dispatch(setShowOrder());
+    
+          dispatch(sendOrder(orderData))
             .unwrap()
             .then((data) => {
-                setOrderNumber(data)
+              setOrderNumber(data);
             })
             .catch((err) => {
-                setOrderNumber(` ошибка - ${err}`).then(setMessage('извините, ошибка'))
+              setOrderNumber(` ошибка - ${err}`);
             })
-            .finally(() => console.log('data api ops finished!'))
-     }
+            .finally(() => console.log("data api ops finished!"));
+        }
+      };
 
     return(
         <div>
