@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Typography } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -9,6 +9,7 @@ import IngredientItem from "../IngredientItem/IngredientItem";
 import { clearIng, openIngr } from "../../services/reducers/ingrDetailsSlice";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 
 
@@ -22,11 +23,20 @@ function BurgerIngredients() {
     const ingredients = useSelector(getIngrSelector);
     const loading = useSelector(isLoadingSelector);
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const bunsRef = useRef(null);
     const saucesRef = useRef(null);
     const fillingsRef = useRef(null);
     const scrollContainerRef = useRef(null);
+    const navigate = useNavigate();
+    const currentIngr = useSelector(state => state.ingredientDetails.currentIngredient)
+
+    const ingrClick = useCallback((item) => {
+        dispatch(openIngr(item));
+        },
+        [dispatch]
+      );
 
     const scrollToRef = (ref) => {
         const scrollContainer = scrollContainerRef.current;
@@ -85,10 +95,12 @@ function BurgerIngredients() {
     const openModal = (element) => {
         dispatch(openIngr(element));
         setModalOpen(true);
+        navigate(`/ingredients/${element._id}`, { state: { background: location } });
     }
     const closeModal = () => {
         setModalOpen(false);
         dispatch(clearIng());
+        navigate('/');
     }
 
     const ingrArray = useSelector(
@@ -101,7 +113,8 @@ function BurgerIngredients() {
     useEffect(() => {
         dispatch(fetchIngredients())
     }, [dispatch]);
-    
+
+    console.log(ingredients.data.filter(item => item.name === 'Краторная булка N-200i'))
     if (ingredients === null || ingredients===undefined) {
         return null;
     }
@@ -145,12 +158,22 @@ function BurgerIngredients() {
                     <h3 className="text text_type_main-medium mb-6">Булки</h3>
                     <div className={styles.chapter}>
                         {bunIngr.map((ingredient) => (
-                            <IngredientItem
-                                key={ingredient._id}
-                                ingredient={ingredient}
-                                onClick={() => openModal(ingredient)}
-                                count={getBunsCount(bunArray, ingredient._id)}
-                            />
+                            <Link
+                            className={styles.link}
+                            key={ingredient._id}
+                            to={`/ingredients/${ingredient._id}`}
+                            state={{ background: location }}
+                            >   
+                                <IngredientItem
+                                    key={ingredient._id}
+                                    ingredient={ingredient}
+                                    onClick={() => {
+                                        openModal(ingredient);
+                                        ingrClick(ingredient);
+                                    }}
+                                    count={getBunsCount(bunArray, ingredient._id)}
+                                />
+                            </Link>
                         ))}
                     </div>
                 </div>
@@ -159,12 +182,22 @@ function BurgerIngredients() {
                     <h3 className="text text_type_main-medium mb-6">Соусы</h3>
                     <div className={styles.chapter}>
                         {sauceIngr.map((ingredient) => (
-                            <IngredientItem
-                                key={ingredient._id}
-                                ingredient={ingredient}
-                                onClick={() => openModal(ingredient)}
-                                count={getIngredientCount(ingrArray, ingredient._id)}
-                            />
+                            <Link
+                            className={styles.link}
+                            key={ingredient._id}
+                            to={`/ingredients/${ingredient._id}`}
+                            state={{ background: location }}
+                            >
+                                <IngredientItem
+                                    key={ingredient._id}
+                                    ingredient={ingredient}
+                                    onClick={() => {
+                                        openModal(ingredient);
+                                        ingrClick(ingredient);
+                                    }}
+                                    count={getIngredientCount(ingrArray, ingredient._id)}
+                                />
+                            </Link>
                         ))}
                     </div>
                 </div>
@@ -173,12 +206,22 @@ function BurgerIngredients() {
                     <h3 className="text text_type_main-medium mb-6">Начинки</h3>
                     <div className={styles.chapter}>
                         {mainIngr.map((ingredient) => (
-                            <IngredientItem
-                                key={ingredient._id}
-                                ingredient={ingredient}
-                                onClick={() => openModal(ingredient)}
-                                count={getIngredientCount(ingrArray, ingredient._id)}
-                            />
+                            <Link
+                            className={styles.link}
+                            key={ingredient._id}
+                            to={`/ingredients/${ingredient._id}`}
+                            state={{ background: location }}
+                            >
+                                <IngredientItem
+                                    key={ingredient._id}
+                                    ingredient={ingredient}
+                                    onClick={() => {
+                                        openModal(ingredient);
+                                        ingrClick(ingredient);
+                                    }}
+                                    count={getIngredientCount(ingrArray, ingredient._id)}
+                                />
+                            </Link>
                         ))}
                     </div>
                 </div>

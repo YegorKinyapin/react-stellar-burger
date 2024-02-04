@@ -1,0 +1,32 @@
+.profile {
+    display: flex;
+    gap: 60px;
+    grid-column: span 3;
+    width: 1280px;
+    margin: auto;
+    margin-top: 120px;
+}
+.link {
+    color: #F2F2F3;
+    text-decoration: none;
+}
+.link_inactive {
+    text-decoration: none;
+}
+.link_block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.text {
+    width: 320px;
+}
+.input_block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}

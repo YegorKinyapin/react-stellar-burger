@@ -27,3 +27,7 @@
     margin-top: 0;
 	margin-bottom: 40px;
 }
+.link {
+    text-decoration: none;
+    color: #f2f2f3;
+}

@@ -1,6 +1,7 @@
 .block {
     display: grid;
     grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto 1fr;
     padding-top: 16px;
     padding-bottom: 16px;
     width: 1280px;
@@ -21,4 +22,8 @@
 }
 .text {
     color: #F2F2F3;
+}
+.link {
+    white-space: nowrap;
+    text-decoration: none;
 }

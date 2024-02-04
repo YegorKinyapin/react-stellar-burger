@@ -23,7 +23,7 @@ function BurgerOrder() {
                 .concat(bunsCart?._id)
                 .concat(notBunsCart?.map(({ _id }) => _id))
                 .concat(bunsCart?._id),
-        }),
+            }),
         [bunsCart, notBunsCart]
     );
 
