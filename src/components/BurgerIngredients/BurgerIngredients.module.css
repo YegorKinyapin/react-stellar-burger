@@ -1,0 +1,33 @@
+.custom_scroll::-webkit-scrollbar {
+	width: 12px;
+}
+.custom_scroll::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+.custom_scroll::-webkit-scrollbar-thumb {
+	background: #8585AD;
+	border: 3px solid #2F2F37;
+	border-radius: 6px;
+}
+.block {
+    height: 756px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.tab_block {
+	display: flex;
+}
+.chapter {
+    display: grid;
+    grid-template-columns: 274px 269px;
+    column-gap: 24px;
+    row-gap: 32px;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: 0;
+	margin-bottom: 40px;
+}
+.link {
+    text-decoration: none;
+    color: #f2f2f3;
+}

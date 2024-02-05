@@ -1,0 +1,25 @@
+.block {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: 274px 269px;
+    column-gap: 24px;
+    row-gap: 32px;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: 0;
+}
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    position: relative;
+}
+.name {
+    text-align: center;
+}
+.price_block {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}

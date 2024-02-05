@@ -1,0 +1,29 @@
+.block {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto 1fr;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    width: 1280px;
+    margin: 40px auto 0 auto;
+}
+.logo {
+    margin-left: 112px;
+}
+.construc {
+    display: flex;
+    gap: 8px;
+}
+.element {
+    display: flex;
+    gap: 8px;
+    padding: 16px 20px 16px 20px;
+    text-decoration: none;
+}
+.text {
+    color: #F2F2F3;
+}
+.link {
+    white-space: nowrap;
+    text-decoration: none;
+}
